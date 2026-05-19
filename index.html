@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NextGen · Программа · Деловая коммуникация</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f8; padding: 32px 16px; }
+
+  .page { max-width: 860px; margin: 0 auto; }
+
+  .header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+    border-radius: 14px;
+    padding: 36px 40px;
+    color: white;
+    margin-bottom: 24px;
+  }
+  .header .label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #93c5fd; margin-bottom: 8px; }
+  .header h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+  .header p { font-size: 14px; color: #bfdbfe; }
+  .header-chips { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .chip { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 500; }
+
+  .between-block {
+    background: #eff6ff;
+    border-left: 4px solid #2563eb;
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .between-block h3 { font-size: 12px; font-weight: 700; color: #1d4ed8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .between-block p { font-size: 13px; color: #1e40af; line-height: 1.6; }
+
+  .table-wrap { background: white; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    background: #2563eb;
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  tbody tr { border-bottom: 1px solid #e2e8f0; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) td { background: #f8fafc; }
+  tbody tr:hover td { background: #eff6ff; transition: background 0.15s; }
+  td { padding: 14px 16px; font-size: 13px; color: #334155; vertical-align: top; line-height: 1.6; }
+
+  /* ИСПРАВЛЕННАЯ колонка встреч */
+  .num-cell {
+    width: 100px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .num-badge {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    border: 2px solid #bfdbfe;
+    border-radius: 10px;
+    padding: 8px 12px;
+    min-width: 72px;
+  }
+  .num-badge .label-top {
+    font-size: 10px;
+    font-weight: 700;
+    color: #2563eb;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .num-badge .num {
+    font-size: 20px;
+    font-weight: 800;
+    color: #2563eb;
+    line-height: 1;
+  }
+  .num-badge.special {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+  }
+  .num-badge.special .label-top,
+  .num-badge.special .num { color: #64748b; }
+
+  .stage-cell { width: 160px; }
+  .stage-name { font-weight: 700; font-size: 13px; color: #0f172a; margin-bottom: 2px; }
+  .stage-meta { font-size: 11px; color: #94a3b8; }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+  .tag-blue { background: #dbeafe; color: #1d4ed8; }
+  .tag-green { background: #dcfce7; color: #166534; }
+  .tag-purple { background: #ede9fe; color: #6d28d9; }
+  .tag-orange { background: #ffedd5; color: #9a3412; }
+  .tag-gray { background: #f1f5f9; color: #475569; }
+
+  .result-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #166534;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin-top: 4px;
+  }
+  .result-pill::before { content: '✓'; font-weight: 700; color: #16a34a; }
+
+  .rules-block {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+  .rules-block h2 { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 16px; }
+  .rules-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .rule-item {
+    flex: 1;
+    min-width: 180px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .rule-icon { font-size: 22px; flex-shrink: 0; }
+  .rule-text strong { display: block; font-size: 13px; color: #0f172a; margin-bottom: 2px; }
+  .rule-text span { font-size: 12px; color: #475569; line-height: 1.5; }
+
+  .footer {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer p { font-size: 13px; color: #475569; }
+  .footer strong { color: #0f172a; }
+  .footer a { background: #2563eb; color: white; text-decoration: none; padding: 10px 22px; border-radius: 8px; font-size: 13px; font-weight: 700; white-space: nowrap; }
+  .footer a:hover { background: #1d4ed8; }
+
+  ul.mini { list-style: none; display: flex; flex-direction: column; gap: 4px; padding: 0; }
+  ul.mini li { font-size: 13px; color: #334155; padding-left: 12px; position: relative; }
+  ul.mini li::before { content: '·'; position: absolute; left: 0; color: #2563eb; font-weight: 700; }
+
+  @media (max-width: 600px) {
+    .header { padding: 24px 20px; }
+    .header h1 { font-size: 24px; }
+    td, th { padding: 10px 10px; }
+    .num-badge { min-width: 56px; padding: 6px 8px; }
+    .num-badge .num { font-size: 16px; }
+    .rules-row { flex-direction: column; }
+    .footer { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="label">Отдел обучения · EDU</div>
+    <h1>NextGen · Деловая коммуникация</h1>
+    <p>Программа индивидуальной работы с сотрудником. Адаптируется под конкретные проблемы.</p>
+    <div class="header-chips">
+      <span class="chip">📧 Деловая переписка</span>
+      <span class="chip">⏱ 10 встреч</span>
+      <span class="chip">📅 ~1 месяц</span>
+      <span class="chip">👤 1 на 1 с тренером</span>
+    </div>
+  </div>
+
+  <div class="between-block">
+    <h3>Работа между встречами</h3>
+    <p>После каждой встречи сотрудник получает карточку с правилами и применяет их к реальным рабочим письмам. Тренер даёт короткую обратную связь в чате — ~20 минут в день, без отрыва от работы.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:100px; text-align:center;">Встреча</th>
+          <th style="width:160px;">Этап</th>
+          <th>Что происходит</th>
+          <th style="width:220px;">Результат</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="num-cell">
+            <div class="num-badge">
+              <span class="label-top">Встреча</span>
+              <span class="num">1</span>
+            </div>
+          </td>
+          <td class="stage-cell">
+            <div class="stage-name">Вводная встреча</div>
+            <div class="stage-meta">1 час</div>
+            <div style="margin-top:6px;"><span class="tag tag-blue">Диагностика ДО</span></div>
+          </td>
+          <td>
+            <ul class="mini">
+              <li>Знакомство с программой и правилами работы</li>
+              <li>Сотрудник пишет 2–3 письма — диагностика уровня ДО</li>
+              <li>Формирование базовых правил хорошего письма</li>
+            </ul>
+          </td>
+          <td>
+            <div class="result-pill">Карточка с базовыми правилами письма</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="num-cell">
+            <div class="num-badge">
+              <span class="label-top">Встречи</span>
+              <span class="num">2–5</span>
+            </div>
+          </td>
+          <td class="stage-cell">
+            <div class="stage-name">Тип письма №1</div>
+            <div class="stage-meta">4 встречи</div>
+            <div style="margin-top:6px;"><span class="tag tag-purple">Отработка</span></div>
+          </td>
+          <td>
+            Разбор ошибок из диагностики. Работа над структурой, краткостью и логикой
+            <div style="margin-top:6px; font-size:12px; color:#64748b;">Лог встречи <b>или</b> информирующее письмо — по выбору куратора</div>
+          </td>
+          <td>
+            <div class="result-pill">Умеет писать один тип письма чётко и по делу</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="num-cell">
+            <div class="num-badge">
+              <span class="label-top">Встречи</span>
+              <span class="num">6–8</span>
+            </div>
+          </td>
+          <td class="stage-cell">
+            <div class="stage-name">Тип письма №2</div>
+            <div class="stage-meta">3 встречи</div>
+            <div style="margin-top:6px;"><span class="tag tag-purple">Отработка</span></div>
+          </td>
+          <td>
+            Те же принципы — на втором типе письма
+            <div style="margin-top:6px; font-size:12px; color:#64748b;">Лог встречи <b>или</b> информирующее — второй из пары</div>
+          </td>
+          <td>
+            <div class="result-pill">Умеет писать второй тип письма</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="num-cell">
+            <div class="num-badge">
+              <span class="label-top">Встреча</span>
+              <span class="num">9</span>
+            </div>
+          </td>
+          <td class="stage-cell">
+            <div class="stage-name">Тип письма №3</div>
+            <div class="stage-meta">1 встреча</div>
+            <div style="margin-top:6px;"><span class="tag tag-orange">Итоговая</span></div>
+          </td>
+          <td>
+            Разбор третьего типа + повторение всех правил
+            <div style="margin-top:6px; font-size:12px; color:#64748b;">Эскалация <b>или</b> сообщение в мессенджере — по выбору куратора</div>
+          </td>
+          <td>
+            <div class="result-pill">Умеет писать все три типа писем</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="num-cell">
+            <div class="num-badge">
+              <span class="label-top">Встреча</span>
+              <span class="num">10</span>
+            </div>
+          </td>
+          <td class="stage-cell">
+            <div class="stage-name">Завершение</div>
+            <div class="stage-meta">1 час</div>
+            <div style="margin-top:6px;"><span class="tag tag-green">Диагностика ПОСЛЕ</span></div>
+          </td>
+          <td>
+            <ul class="mini">
+              <li>Тестирование — те же 2–3 письма, что на старте</li>
+              <li>Сравнение ДО и ПОСЛЕ</li>
+              <li>Обратная связь сотруднику + рекомендации</li>
+              <li>Куратор может присутствовать или получить запись</li>
+            </ul>
+          </td>
+          <td>
+            <div class="result-pill">Видимый результат — что изменилось</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="num-cell">
+            <div class="num-badge special">
+              <span class="label-top">После</span>
+              <span class="num">📋</span>
+            </div>
+          </td>
+          <td class="stage-cell">
+            <div class="stage-name">Отчёт</div>
+            <div class="stage-meta">Руководителю</div>
+            <div style="margin-top:6px;"><span class="tag tag-gray">После завершения</span></div>
+          </td>
+          <td>Краткое и развёрнутое заключение: что было, что стало, рекомендации</td>
+          <td>
+            <div class="result-pill">Руководитель видит динамику</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rules-block">
+    <h2>Правила участия</h2>
+    <div class="rules-row">
+      <div class="rule-item">
+        <div class="rule-icon">📅</div>
+        <div class="rule-text">
+          <strong>2 встречи в неделю</strong>
+          <span>По 45–60 минут. Программа рассчитана на 1 месяц</span>
+        </div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon">⚠️</div>
+        <div class="rule-text">
+          <strong>Не более 2 переносов</strong>
+          <span>При третьем переносе программа приостанавливается — руководитель получает уведомление</span>
+        </div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon">✏️</div>
+        <div class="rule-text">
+          <strong>~20 минут в день</strong>
+          <span>Самостоятельная работа между встречами на реальных рабочих письмах</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>
+      <p><strong>Хотите записать сотрудника?</strong></p>
+      <p>Напишите руководителю отдела обучения — разберём ситуацию и запустим программу</p>
+    </div>
+    <a href="https://t.me/anyakurazaeva">✉️ Написать Ане Куразаевой</a>
+  </div>
+
+</div>
+</body>
+</html>
